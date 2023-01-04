@@ -14,3 +14,7 @@ config/name="Aephibi"
 run/main_scene="res://scenes/global/main.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Data="*res://scripts/auto_load/data.gd"

@@ -31,11 +31,14 @@ func _physics_process(delta):
 func _input(event):
 	if is_master():
 		if event is InputEventMouseMotion:
-			$Wand.rotation = position.angle_to_point(get_global_mouse_position())
-			if $Wand.rotation < -PI/2 or $Wand.rotation > PI/2:	
+			rotation = position.angle_to_point(get_global_mouse_position())
+			if rotation < -PI/2 or rotation > PI/2:
 				$Sprite.flip_h = true
+				rotation = (rotation - PI * sign(rotation))
 			else:
 				$Sprite.flip_h = false
+			rotation /= 5
+			$Wand.global_rotation = position.angle_to_point(get_global_mouse_position())
 
 
 func get_input():
