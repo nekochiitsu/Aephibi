@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dsp02f1nuhq53"]
+[gd_scene load_steps=4 format=3 uid="uid://dsp02f1nuhq53"]
 
 [ext_resource type="Script" path="res://scripts/global/main.gd" id="1_g0bc8"]
-[ext_resource type="PackedScene" uid="uid://b24c75t5epkdb" path="res://scenes/game/player.tscn" id="2_eoeow"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_2pfgr"]
 
@@ -10,12 +9,17 @@ width = 2048
 height = 2048
 noise = SubResource("FastNoiseLite_2pfgr")
 
-[node name="Main" type="Node"]
+[node name="Game" type="Node"]
 script = ExtResource("1_g0bc8")
-
-[node name="Player" parent="." instance=ExtResource("2_eoeow")]
-position = Vector2(501, 188)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 texture = SubResource("NoiseTexture2D_563u2")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/game/player.tscn")
+spawn_path = NodePath("../Entities/Players")
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Players" type="Node2D" parent="Entities"]

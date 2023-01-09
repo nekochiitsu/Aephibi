@@ -1,32 +1,24 @@
 extends Node
 
-var Player: CharacterBody2D
+@onready var Player: CharacterBody2D = get_parent()
 
-var Online: Dictionary = {
-	position = Vector3(),
-	rotation = Vector3(),
-	velocity = Vector3(),
-	weapon_rotation = Vector3()
-}
+var Online: Dictionary
 
 
 func _ready():
-	Player = get_parent()
-	Online.position        = Player.position
-	Online.rotation        = Player.rotation
-	Online.velocity        = Player.velocity
-	Online.hp              = Player.hp
-	Online.weapon_rotation = Player.get_node("Weapon").rotation
+	Online = {
+	position       = Player.position,
+	velocity       = Player.velocity,
+	mouse_position = Vector2()
+	}
 
 
-func _process(delta):
-	if !Player.is_master():
-		Player.position        = Online.position
-		Player.rotation        = Online.rotation
-		Player.velocity        = Online.velocity
-		Player.Weapon.rotation = Online.Camera_rotation
+func _process(_delta):
+	if Player.is_master():
+		Online.position       = Player.position
+		Online.mouse_position = Player.mouse_position
+		Online.velocity       = Player.velocity
 	else:
-		Online.position        = Player.position
-		Online.rotation        = Player.rotation
-		Online.velocity        = Player.velocity
-		Online.weapon_rotation = Player.Weapon.rotation
+		Player.position       = Online.position
+		Player.mouse_position = Online.mouse_position
+		Player.velocity       = Online.velocity

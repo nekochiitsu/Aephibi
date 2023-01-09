@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b24c75t5epkdb"]
+[gd_scene load_steps=8 format=3 uid="uid://b24c75t5epkdb"]
 
 [ext_resource type="Script" path="res://scripts/game/player.gd" id="1_le6i1"]
 [ext_resource type="Texture2D" uid="uid://by3fgpxjvcndr" path="res://assets/visual/player/stand/grey_mystique.png" id="2_7i6ty"]
 [ext_resource type="Texture2D" uid="uid://ds1dtvax8502" path="res://assets/visual/player/cursor/baguette.png" id="3_axall"]
+[ext_resource type="Script" path="res://scripts/game/multiplayer.gd" id="3_jh4b5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g0ybt"]
 animations = [{
@@ -39,10 +40,10 @@ offset = Vector2(8, 7.5)
 shape = SubResource("CapsuleShape2D_ubrs6")
 
 [node name="Camera" type="Camera2D" parent="."]
-current = true
 zoom = Vector2(2, 2)
 
 [node name="Multiplayer" type="Node" parent="."]
+script = ExtResource("3_jh4b5")
 
 [node name="Synchronizer" type="MultiplayerSynchronizer" parent="Multiplayer"]
 replication_interval = 0.015
