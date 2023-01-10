@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var       Sprite:        AnimatedSprite2D = get_node("Sprite")
 @onready var       Camera:                Camera2D = get_node("Camera")
 @onready var         Wand:                  Node2D = get_node("Wand")
+@onready var        Spell:             PackedScene = load("res://scenes/game/fireball.tscn")
 
 var statistics: Dictionary
 
@@ -22,7 +23,8 @@ func _ready():
 			hp = 100.,
 			mana = 100.,
 			energy = 10.,
-			speed = 150.
+			speed = 150.,
+			recoil = 0.
 		},
 		max = {
 			hp = 100.,
@@ -51,6 +53,15 @@ func _input(event):
 				Sprite.flip_h = false
 			rotation /= 5
 			Wand.global_rotation = position.angle_to_point(mouse_position)
+		if event is InputEventKey:
+			if event.get_keycode() == KEY_A: #à mettre en input
+				if !event.is_echo(): #check le hold
+					var new_spell = Spell.instantiate()
+					new_spell.position = Wand.global_position
+					new_spell.rotation = Wand.global_rotation
+					#new_spell.init(stats) init avec les stats de la wand
+					get_parent().add_child(new_spell)
+
 
 
 func get_input():
