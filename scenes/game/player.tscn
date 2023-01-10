@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b24c75t5epkdb"]
+[gd_scene load_steps=9 format=3 uid="uid://b24c75t5epkdb"]
 
 [ext_resource type="Script" path="res://scripts/game/player.gd" id="1_le6i1"]
 [ext_resource type="Texture2D" uid="uid://by3fgpxjvcndr" path="res://assets/visual/player/stand/grey_mystique.png" id="2_7i6ty"]
 [ext_resource type="Texture2D" uid="uid://ds1dtvax8502" path="res://assets/visual/player/cursor/baguette.png" id="3_axall"]
 [ext_resource type="Script" path="res://scripts/game/multiplayer.gd" id="3_jh4b5"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_4cue4"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_l1lgm"]
 animations = [{
 "frames": [ExtResource("2_7i6ty")],
 "loop": true,
@@ -13,11 +13,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rk1gq"]
-radius = 8.0
-height = 43.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_qreeq"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_c3uty"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ovxjy"]
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wka5u"]
 properties/0/path = NodePath(".:Online")
 properties/0/spawn = true
 properties/0/sync = true
@@ -28,26 +32,33 @@ collision_layer = 16
 floor_constant_speed = true
 floor_max_angle = 1.48353
 script = ExtResource("1_le6i1")
+metadata/_edit_horizontal_guides_ = [-20.0]
+metadata/_edit_vertical_guides_ = [-97.0]
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 position = Vector2(-8, -6)
-frames = SubResource("SpriteFrames_4cue4")
+frames = SubResource("SpriteFrames_l1lgm")
 animation = &"Stand"
 offset = Vector2(8, 7.5)
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_rk1gq")
+shape = SubResource("CircleShape2D_qreeq")
 
-[node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+[node name="Button" type="Button" parent="Collision"]
+offset_left = -8.99998
+offset_top = -8.00002
+offset_right = -0.999979
+offset_bottom = -2.38419e-05
+scale = Vector2(2.1083, 2.14114)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ovxjy")
 
 [node name="Multiplayer" type="Node" parent="."]
 script = ExtResource("3_jh4b5")
 
 [node name="Synchronizer" type="MultiplayerSynchronizer" parent="Multiplayer"]
 replication_interval = 0.015
-replication_config = SubResource("SceneReplicationConfig_c3uty")
+replication_config = SubResource("SceneReplicationConfig_wka5u")
 
 [node name="Wand" type="Node2D" parent="."]
 
@@ -55,3 +66,6 @@ replication_config = SubResource("SceneReplicationConfig_c3uty")
 texture_filter = 1
 position = Vector2(32, 0)
 texture = ExtResource("3_axall")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)

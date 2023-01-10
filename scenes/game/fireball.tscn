@@ -21,6 +21,7 @@ height = 16.0
 script = ExtResource("1_oodhq")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 frames = SubResource("SpriteFrames_vu2l1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

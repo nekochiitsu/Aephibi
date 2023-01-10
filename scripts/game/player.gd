@@ -19,19 +19,36 @@ func _ready():
 		Camera.current = true
 		mouse_position = get_global_mouse_position()
 	statistics = {
-		current = {
-			hp = 100.,
-			mana = 100.,
-			energy = 10.,
-			speed = 150.,
-			recoil = 0.
-		},
-		max = {
-			hp = 100.,
-			mana = 100.,
-			energy = 100.,
-			speed = 150.
-		}
+		wands = [
+			{
+				current = {
+					mana = 100.,
+					energy = 10.,
+					recoil = 150.
+				},
+				stats = {
+					mana = 100.,
+					energy = 100.,
+					recoil = 150.
+				}
+			},
+			{
+				current = {
+					mana = 100.,
+					energy = 10.,
+					recoil = 150.
+				},
+				stats = {
+					mana = 100.,
+					energy = 100.,
+					recoil = 150.
+				}
+			}
+		],
+		hp = 100.,
+		hp_max = 60,
+		base_speed = 150.
+
 	}
 
 
@@ -54,13 +71,12 @@ func _input(event):
 			rotation /= 5
 			Wand.global_rotation = position.angle_to_point(mouse_position)
 		if event is InputEventKey:
-			if event.get_keycode() == KEY_A: #à mettre en input
-				if !event.is_echo(): #check le hold
+			if event.keycode == KEY_A: #à mettre en input
+				if !event.echo: #check le hold
 					var new_spell = Spell.instantiate()
-					new_spell.position = Wand.global_position
-					new_spell.rotation = Wand.global_rotation
+					new_spell.transform = Wand.global_transform
 					#new_spell.init(stats) init avec les stats de la wand
-					get_parent().add_child(new_spell)
+					get_node("../../Spells").add_child(new_spell)
 
 
 
@@ -71,11 +87,11 @@ func get_input():
 
 
 func move(delta):
-	statistics.current.speed = 150
+	statistics.speed = 150
 	if is_master():
 		if target != null:
-			if position.distance_to(target) > statistics.current.speed * delta:
-				velocity += statistics.current.speed * (target - position).normalized()
+			if position.distance_to(target) > statistics.speed * delta:
+				velocity += statistics.speed * (target - position).normalized()
 			else:
 				target = null
 	else:

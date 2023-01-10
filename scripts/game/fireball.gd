@@ -15,11 +15,10 @@ func init(stats):
 func _ready():
 	pass
 
-
 func _process(delta):
-	velocity = current_speed*delta*rotation
+	velocity = transform.x * current_speed
 	move_and_slide()
-	current_dist -= current_speed
-	if current_dist < 0:
-		queue_free()
+	current_dist -= current_speed * delta
 	current_speed -= damping*delta
+	if current_dist < 0 or current_speed < 0:
+		queue_free()
