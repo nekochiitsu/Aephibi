@@ -6,7 +6,7 @@ var       damping: float
 
 func init(stats):
 	modulate = stats.color
-	scale = stats.size/100
+	scale *= stats.size/100
 	current_speed = stats.speed
 	current_dist = stats.range
 	rotation += (randf()-0.5)*2*stats.accuracy #entre -1 et 1
