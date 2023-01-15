@@ -4,7 +4,8 @@ var current_speed: float
 var  current_dist: float
 var       damping: float
 
-func init(stats):
+
+func init(caster, stats):
 	modulate = stats.color
 	scale *= stats.size/100
 	current_speed = stats.speed
@@ -14,6 +15,7 @@ func init(stats):
 
 func _ready():
 	pass
+
 
 func _process(delta):
 	velocity = transform.x * current_speed

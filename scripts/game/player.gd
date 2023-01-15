@@ -155,7 +155,7 @@ func cast(spell):
 	spell.current.recoil = min(spell.current.recoil, spell.stats.recoil_max)
 	var new_spell = Spell.instantiate()
 	new_spell.transform = Wand.get_child(0).global_transform
-	new_spell.init(spell.stats) #init avec les stats du spell
+	new_spell.init(self, spell.stats) #init avec les stats du spell
 	get_node("../../Spells").add_child(new_spell, true)
 	bump(spell.stats.knockback * -new_spell.transform.x)
 	spell.current.recoil_decrease = spell.current.recoil/spell.stats.recoil_recovery_time

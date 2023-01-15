@@ -28,7 +28,7 @@ height = 16.0
 
 [node name="Node2D" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 16
+collision_mask = 0
 script = ExtResource("1_oodhq")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
