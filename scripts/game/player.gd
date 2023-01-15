@@ -13,6 +13,7 @@ var mouse_position: Vector2
 
 var target = null
 var cast_buffer: Array = [] 
+var bump_buffer: Array = [] 
 
 func _ready():
 	set_multiplayer_authority(int(str(name)))
@@ -30,7 +31,7 @@ func _ready():
 					cd = 0.
 				},
 				stats = {
-					knockback = 5,
+					knockback = 30,
 					movespeed = 5,
 
 					mana_max = 100,
@@ -46,11 +47,11 @@ func _ready():
 					recoil = deg_to_rad(1),
 					recoil_recovery_time = 5,
 					recoil_max = deg_to_rad(60),
-					speed = 8,
+					speed = 300.,
 					damping = 1,
 					accuracy = deg_to_rad(10),
 					size = 100.,
-					range = 100,
+					range = 1000,
 					bump = 5
 				}
 			},
@@ -63,7 +64,7 @@ func _ready():
 					cd = 0.
 				},
 				stats = {
-					knockback = 5,
+					knockback = 30,
 					movespeed = 5,
 
 					mana_max = 100,
@@ -79,11 +80,11 @@ func _ready():
 					recoil = deg_to_rad(1),
 					recoil_recovery_time = 5,
 					recoil_max = deg_to_rad(60),
-					speed = 8,
+					speed = 300.,
 					damping = 1,
 					accuracy = deg_to_rad(10),
 					size = 100.,
-					range = 100,
+					range = 1000,
 					bump = 5
 				}
 			}
@@ -136,6 +137,7 @@ func can_cast(spell):
 
 
 func add_wait_cast(spell):
+	$Wand/Animation.play("Cast", -1, 1/spell.stats.cast_time)
 	spell.current.cd = Game.time + spell.stats.cooldown + spell.stats.cast_time
 	cast_buffer.append([spell, Game.time + spell.stats.cast_time])
 
@@ -151,12 +153,11 @@ func wait_cast():
 func cast(spell):
 	spell.current.recoil += spell.stats.recoil
 	spell.current.recoil = min(spell.current.recoil, spell.stats.recoil_max)
-	bump(spell.stats.knockback)
 	var new_spell = Spell.instantiate()
-	print(new_spell)
-	new_spell.transform = Wand.global_transform
+	new_spell.transform = Wand.get_child(0).global_transform
 	new_spell.init(spell.stats) #init avec les stats du spell
 	get_node("../../Spells").add_child(new_spell, true)
+	bump(spell.stats.knockback * -new_spell.transform.x)
 	spell.current.recoil_decrease = spell.current.recoil/spell.stats.recoil_recovery_time
 
 
@@ -166,8 +167,8 @@ func get_input():
 		target = mouse_position
 
 
-func bump(value):
-	pass
+func bump(vector):
+	bump_buffer.append([vector, Game.time])
 
 func stats_trucs(delta):
 	for e in statistics.wands:
@@ -178,10 +179,13 @@ func stats_trucs(delta):
 		if e.current.recoil < 0:
 			e.current.recoil = 0
 	
+	
 
 func move(delta):
 	statistics.speed = 150
 	if is_master():
+		for e in bump_buffer:
+			velocity += e[0] * exp((e[1]-Game.time)/0.2) #0.4 = Tau
 		if target != null:
 			if position.distance_to(target) > statistics.speed * delta:
 				velocity += statistics.speed * (target - position).normalized()
